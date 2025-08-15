@@ -1,9 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { System } from 'models/System';
+import { Injectable, Optional } from '@nestjs/common';
+import type { System } from 'models/System';
 
 @Injectable()
 export class ShipAdriftService {
-  private readonly system: System = {
+  constructor(
+    @Optional() private readonly system: System = this.systemDefault,
+  ) {}
+
+  private damagedSystemCode: string;
+
+  private readonly systemDefault: System = {
     Navigation: 'NAV-01',
     Communications: 'COM-02',
     LifeSupport: 'LIFE-03',
@@ -12,8 +18,14 @@ export class ShipAdriftService {
   } as System;
 
   getDamagedSystem(): string {
-    const systemPropKeys = Object.keys(this.system).map((key) => key);
+    const systemPropKeys = Object.keys(this.system) as (keyof System)[];
     const randomIndex = Math.floor(Math.random() * systemPropKeys.length);
-    return systemPropKeys[randomIndex];
+    const randomKey = systemPropKeys[randomIndex];
+    this.damagedSystemCode = this.system[randomKey];
+    return randomKey as string;
+  }
+
+  getDamagedSystemCode(): string {
+    return this.damagedSystemCode;
   }
 }
