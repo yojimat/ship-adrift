@@ -1,21 +1,19 @@
 import { Injectable, Optional } from '@nestjs/common';
 import type { System } from 'models/System';
 
+export const systemDefault: System = {
+  Navigation: 'NAV-01',
+  Communications: 'COM-02',
+  LifeSupport: 'LIFE-03',
+  Engines: 'ENG-04',
+  DeflectorShield: 'SHLD-05',
+};
+
 @Injectable()
 export class ShipAdriftService {
-  constructor(
-    @Optional() private readonly system: System = this.systemDefault,
-  ) {}
+  constructor(@Optional() private readonly system: System = systemDefault) {}
 
-  private damagedSystemCode: string;
-
-  private readonly systemDefault: System = {
-    Navigation: 'NAV-01',
-    Communications: 'COM-02',
-    LifeSupport: 'LIFE-03',
-    Engines: 'ENG-04',
-    DeflectorShield: 'SHLD-05',
-  } as System;
+  private damagedSystemCode: string = 'No damaged System';
 
   getDamagedSystem(): string {
     const systemPropKeys = Object.keys(this.system) as (keyof System)[];

@@ -4,6 +4,9 @@ import request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
 import { StatusResponse } from 'src/ship-adrift/interfaces/StatusResponse';
+import { systemDefault } from '../src/ship-adrift/ship-adrift.service';
+import { System } from 'models/System';
+import { switchToCamelCase } from '../src/utils/strings-utils';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
@@ -33,7 +36,18 @@ describe('AppController (e2e)', () => {
     const damagedSystem: string = (response.body as StatusResponse)
       .damaged_system;
 
-    const htmlPage = `<!DOCTYPE html><html><head><title>Repair</title></head><body><div class="anchor-point">${damagedSystem}</div></body></html>`;
+    const damagedSystemCamelCase = switchToCamelCase(damagedSystem);
+    console.log(damagedSystemCamelCase);
+    const htmlPage = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Repair</title>
+        </head>
+        <body>
+          <div class="anchor-point">${systemDefault[damagedSystemCamelCase as keyof System]}</div>
+        </body>
+      </html>`;
 
     return request(app.getHttpServer())
       .get('/repair-bay')
