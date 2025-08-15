@@ -1,4 +1,4 @@
-import { Controller, Get, Header, HttpCode } from '@nestjs/common';
+import { Controller, Get, Header, HttpCode, Post } from '@nestjs/common';
 import { ShipAdriftService } from './ship-adrift.service';
 import type { StatusResponse } from './interfaces/StatusResponse';
 import { switchToUnderscore } from '../utils/strings-utils';
@@ -32,7 +32,7 @@ export class ShipAdriftController {
       </html>`;
   }
 
-  @Get('teapot')
+  @Post('teapot')
   @HttpCode(418)
   getTeapotPage() {}
 }
