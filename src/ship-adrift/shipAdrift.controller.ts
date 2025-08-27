@@ -1,6 +1,9 @@
-import { Controller, Get, Header, HttpCode, Post } from '@nestjs/common';
+import { Controller, Get, Header, HttpCode, Post, Query } from '@nestjs/common';
 import { ShipAdriftService } from './ship-adrift.service';
-import type { StatusResponse } from './interfaces/StatusResponse';
+import type {
+  PhaseResponse,
+  StatusResponse,
+} from './interfaces/StatusResponse';
 import { switchToUnderscore } from '../utils/strings-utils';
 
 @Controller()
@@ -35,4 +38,14 @@ export class ShipAdriftController {
   @Post('teapot')
   @HttpCode(418)
   getTeapotPage() {}
+
+  @Get('phase-change-diagram')
+  getPhaseChangeDiagram(@Query('pressure') pressure: number): PhaseResponse {
+    console.log(pressure);
+
+    return {
+      specific_volume_liquid: 0.0035,
+      specific_volume_vapor: 0.0035,
+    };
+  }
 }

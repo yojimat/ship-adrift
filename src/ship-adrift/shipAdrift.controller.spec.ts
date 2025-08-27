@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ShipAdriftController } from './shipAdrift.controller';
 import { ShipAdriftService } from './ship-adrift.service';
-import { StatusResponse } from './interfaces/StatusResponse';
+import { PhaseResponse, StatusResponse } from './interfaces/StatusResponse';
 
 describe('ShipAdriftController', () => {
   let shipAdriftController: ShipAdriftController;
@@ -45,6 +45,15 @@ describe('ShipAdriftController', () => {
           damaged_system: 'life_support',
         } as StatusResponse),
       );
+    });
+
+    it('should return the phase change diagram', () => {
+      const response = shipAdriftController.getPhaseChangeDiagram(101.3);
+
+      expect(response).toEqual({
+        specific_volume_liquid: 0.0035,
+        specific_volume_vapor: 0.0035,
+      } as PhaseResponse);
     });
   });
 });
